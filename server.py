@@ -2,11 +2,9 @@ from socket import socket
 import threading
 import socket
 from colorama import Fore, init
+from globals import host,port
 
 init(autoreset=True)
-
-host = '127.0.0.1'
-port = 55555
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
@@ -17,8 +15,18 @@ nicknames = []
 
 
 def broadcast(message):
-    for client in clients:
-        client.send(message)
+    mesg = message.decode('ascii')
+    # print(type(mesg),mesg)
+    if mesg.split(' ')[1] in nicknames:
+        try:
+            index = nicknames.index(mesg.split(' ')[1])
+            current_client = clients[index]
+            current_client.send(message)
+        except TypeError:
+            print('problem')
+    else:
+        for client in clients:
+            client.send(message)
 
 
 def handle(client):
@@ -47,7 +55,7 @@ def receive():
         clients.append(client)
 
         print(Fore.GREEN + f'Nickname of the client is {nickname}!')
-        broadcast(f'Server: {nickname} joined the chat!'.encode('ascii'))
+        broadcast(f'Server message: {nickname} joined the chat!'.encode('ascii'))
         client.send('Connected to the server!'.encode('ascii)'))
         print(f'{nicknames} on server now')
         thread = threading.Thread(target=handle, args=(client,))

@@ -1,10 +1,13 @@
 import socket
 import threading
-# from server import nicknames
+from globals import host,port
+from colorama import Fore, init
+
+init(autoreset=True)
 
 nickname = input('Enter the nickname: ')
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('127.0.0.1', 55555))
+client.connect((host, port))
 
 
 def receive():
@@ -24,6 +27,7 @@ def receive():
 def write():
     while True:
         message = f'{nickname}: {input("")}'
+        # message = Fore.BLUE + f'{nickname}:' + Fore.WHITE + f'{input("")}'
         client.send(message.encode('ascii'))
 
 
