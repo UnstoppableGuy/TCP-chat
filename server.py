@@ -2,12 +2,11 @@ from socket import socket
 import threading
 import socket
 from colorama import Fore, init
-from globals import host,port
 
 init(autoreset=True)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
+server.bind(('127.0.0.1', 55554))
 server.listen()
 
 clients = []
