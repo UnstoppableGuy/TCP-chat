@@ -1,13 +1,12 @@
 import socket
 import threading
-from globals import host,port
 from colorama import Fore, init
 
 init(autoreset=True)
 
 nickname = input('Enter the nickname: ')
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((host, port))
+client.connect(('127.0.0.1', 55554))
 
 
 def receive():
